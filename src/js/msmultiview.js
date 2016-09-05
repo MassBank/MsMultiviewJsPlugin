@@ -2,23 +2,19 @@
 
 /**
  * 
- * Massbank Multiview is a jQuery plugin for displaying content of massbank peak information on a web browser in a chart layout. 
- * It supports to compare and manage peak information in a proper way as researcher needs. 
- * It was build using jQuery and Highcharts libraries.
+ * Msmultiview is a jQuery plugin which aims to provide a simple layout for manage mass spectra information in a chart view.
+ * It facilitates to visualize, compare and manage mass spectra information in a proper way as researcher needs. 
+ * It was build using jQuery, jQuery UI and Highcharts libraries.
  * 
  * @version 3.0.0
  * @license MIT license
  * @author Riken MassBank Project
  * 
  */
-
-// http://jsdoc.sanstv.ru/
-// http://usejsdoc.org/index.html
 		 
 ( function( $, window, document, undefined ) {
 	
 	/**
-	 * User customize functions
 	 * @private
 	 */
 	var _mv = {
@@ -228,9 +224,9 @@
 				
 				var $wrapper = _mv.popup.getWrapper();
 				$wrapper.empty().show();
-				if ( window.location.protocol != "file:" ) {
+				var sb = [], id_sb = [];
+				if ( window.location.origin.indexOf('https://massbank.nig.ac.jp') != -1 ) {
 					// URL
-					var sb = [], id_sb = [];
 					sb.push( "<p>The MultiView sample plugin</p>" );
 					sb.push( "<p>Updated URL:</p>" );
 					sb.push( "<code>" );
@@ -247,7 +243,6 @@
 					sb.push( "}" );
 					sb.push( "<br/>&lt;/script&gt;" );
 					sb.push( "</code>" );
-					$wrapper.html( sb.join( "" ) );
 				} else {
 					// FILE
 					var sb = [], id_sb = [];
@@ -272,8 +267,8 @@
 					sb.push( "<br/>});" );
 					sb.push( "<br/><br/>&lt;/script&gt;" );
 					sb.push( "</code>" );
-					$wrapper.html( sb.join( "" ) );
 				}
+				$wrapper.html( sb.join( "" ) );
 			},
 			/**
 			 * Returns the string-valued universal identifier of the HTML element
@@ -768,15 +763,6 @@
 		    	/* When moving the mouse over the close button */
 		    	sb.push( ".mv-windows-manager .btn-close:hover { color: black; }" );
 		    	
-		    	/* tooltip */
-//		    	sb.push( ".mv-windows-manager .tooltip { position: relative; display: inline-block; border-bottom: 1px dotted black; }" );
-//		    	sb.push( ".mv-windows-manager .tooltip .tooltiptext { visibility: hidden; width: 120px; background-color: black; color: #fff; text-align: center; border-radius: 6px; padding: 5px 0; position: absolute; z-index: 1; top: -5px; left: 110%; }" );
-//		    	sb.push( ".mv-windows-manager .tooltip .tooltiptext::after { content: ''; position: absolute; top: 50%; right: 100%; margin-top: -5px; border-width: 5px; border-style: solid; border-color: transparent black transparent transparent; }" );
-//		    	sb.push( ".mv-windows-manager .tooltip:hover .tooltiptext { visibility: visible; }" );
-		    	
-//		    	sb.push( ".mv-windows-manager .tooltip:hover:after { background: #333; background: rgba(0,0,0,.8); border-radius: 5px; bottom: -34px; color: #fff; content: attr(title); left: 20%; padding: 5px 15px; position: absolute; z-index: 98; width: 350px; }" );
-//		    	sb.push( ".mv-windows-manager .tooltip:hover:before { border: solid; border-color: #333 transparent; border-width: 0 6px 6px 6px; bottom: -4px; content: ''; left: 50%; position: absolute; z-index: 99; }" );
-		    	
 		    	sb.push( ".mv-windows-manager .windows-container { white-space: nowrap; padding-left: 250px; border: 1px solid #eee; position: relative; margin: 10px 0; height: 165px; }" );
 		    	sb.push( ".mv-windows-manager .windows-container:after, .mv-windows-manager .hdr-container .otherwins-hdr-container:after { content: ''; visibility: hidden; display: block; height: 0; clear: both; }" );
 		    	sb.push( ".mv-windows-manager .btn-container { margin-top: 10px; }" );
@@ -922,10 +908,8 @@
 		    			$( "<div class='mv-chart-container frame' alt='" + _pluginChart[ "id" ] + "'></div>" ).appendTo( $container );
 		    			var opts = $.extend( true, {}, $.fn.msmultiview.defaults[ "highcharts" ], options );
 		    			opts[ "title" ][ "text" ] = _pluginChart[ "title" ];
-//		    			opts.series[0][ "data" ] = _pluginChart[ "series_data" ];
 		    			_mv.highcharts.event.load( _pluginChart[ "id" ], opts, _pluginChart[ "series_data" ] );
 		    		});
-//		    		$( ".highcharts-container" ).width( $( ".ms-multiview:first" ).width() - 5 );
 				}
 			},
 			

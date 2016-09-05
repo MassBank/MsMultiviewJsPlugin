@@ -1,13 +1,14 @@
 # [msmultiview.js](https://massbank.nig.ac.jp/help:msmultiview)
 
-## MassBank MultiView JavaScript Plugin
+###### *MassBank MultiView JavaScript Plugin*
 
-Massbank Multiview is a jQuery plugin for displaying content of massbank peak on a web browser in a chart layout. It supports to compare and manage peak information in a proper way as researcher needs. It was build using [jQuery](https://jquery.com/), [jQuery UI](https://jqueryui.com/) and [Highcharts](http://www.highcharts.com/) libraries.
+Msmultiview is a jQuery plugin which supports to manage mass spectral data in many ways. It works whether the browser is in online or offline mode. It was build using [jQuery](https://jquery.com/), [jQuery UI](https://jqueryui.com/) and [Highcharts](http://www.highcharts.com/) libraries.
 
 ### Main features
 
-* Managing multiple spectrum charts on different windows or tabs in a single view
-* Works on both public and local web environments
+* Graphical representation of mass spectral data
+* Manage (sort, delete, export...etc) chart list with comparing own window and other windows information
+* Zoom in and out of charts areas
 
 ## Installation
 
@@ -18,7 +19,7 @@ either via the `charset="utf-8"` attribute on the `script` tag or by adding `<me
 
 #### Add CSS and Javascript
 
-To install jQuery MassBank MultiView Plugin into your webpage, first include [jQuery](https://jquery.com/), [jQuery UI](https://jqueryui.com/) and [Highcharts](http://www.highcharts.com/) JS files.
+To install plugin into your page, first include [jQuery](https://jquery.com/), [jQuery UI](https://jqueryui.com/) and [Highcharts](http://www.highcharts.com/) JS files.
 
 ``` html
 // jQuery
@@ -36,11 +37,7 @@ To install jQuery MassBank MultiView Plugin into your webpage, first include [jQ
 ```
 #### Create the content
 
-To create a massbank multiview you must first place the container onto your page.
-
-* Make a container `<div>` and give it an identifier like an `ID` or `Class`.
-
-The following shows a basic element.
+Make a container `<div>` and give it an identifier like an `ID` or a `Class`.
 
 ``` html
 <div id="ms-multiview"></div>
@@ -49,7 +46,6 @@ The following shows a basic element.
 #### Initialize the plugin
 
 Using a jQuery selector initialize massbank multiview plugin.
-
 
 ``` html
 <script type="text/javascript">
@@ -75,8 +71,8 @@ Using a jQuery selector initialize massbank multiview plugin.
 </script>
 ```
 
-For more information on customization, visit the [SPEC.md](SPEC.md) page.<br/>
-For code samples, visit [SAMPLE.md](SAMPLE.md) page.
+For customization, visit the [Specifications](SPEC.md) page.<br/>
+For code samples, visit [Samples](SAMPLE.md) page.
 
 Browser Compatibility
 -------
@@ -86,6 +82,9 @@ This plugin supports so-called “modern” browsers, which added support of the
 License
 -------
 
-MassBank MultiView plugin is copyright © 2016-present Massbank Riken.
-
 MassBank MultiView is free plugin, licensed under the creative commons by, Version 3.0.
+
+Copyright
+-------
+
+MassBank MultiView plugin is copyright © 2016-present Massbank Riken.

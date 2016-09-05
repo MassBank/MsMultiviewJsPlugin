@@ -1,5 +1,6 @@
-MassBank MultiView JavaScript Plugin
-=======
+# [msmultiview.js](https://massbank.nig.ac.jp/help:msmultiview)
+
+###### *MassBank MultiView JavaScript Plugin*
 
 ## Samples
 
