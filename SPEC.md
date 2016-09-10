@@ -10,21 +10,25 @@ Plugin Components:
 
 * Multiview windows manager
 * Charts zoomer
-* Mass cpectra charts & snapshots
+* Mass spectra charts & snapshots
 
-## *.msmultiview(URL or Page [, Options])*
+## *.msmultiview(URL(s) or Page(s) [, Options])*
 
-### `URL` or `Page` 
+### `msmultiview`
+
+This is the entry method name of this plugin.
+
+### `URL(s)` or `Page(s)` 
 > Type: String, Multiple Strings or Array <br/>
 > *Required*
 
-Plugin requires at least one or more mass spectra response URL(s). Page name(s) only enough for WIKI pages of massbank.nig.ac.jp domained URL(s).
+Plugin requires at least one or more mass spectra response URL(s) or Page names(s). Page name(s) only enough for WIKI pages of massbank.nig.ac.jp URL(s).
 
 ### `Options`
 > Type: Object <br/>
 > *Optional*
 
-"Options" is a optional parameter and it's properties are grouped into few categories according to plugin components. Each category contains configuration properties specified for their components.
+"Options" is an optional parameter and it's properties are grouped into few categories according to plugin components. Each category contains configuration properties specified for their components.
 
 #### `Options` customizable categories
 
@@ -72,10 +76,11 @@ var options = {
 
 This controller facilitates many features as follow:
 
+- Order mass spectra information of active window
 - Compare mass spectra information of active window with other windows/tabs.
-- Import mass spectra information of other windows/tabs into active window. In this situation,  `mv.event.chart.load.success` method should re-implement to satisfy each responses according to the necessity.
+- Import mass spectra information from other windows/tabs to active window. *In this situation*,  `mv.event.chart.load.success` method should re-implement to satisfy each responses according to the necessity.
 - Remove mass spectra information from active window.
-- Error messages for invalid data URLs.
+- Error messaging for invalid data URLs.
 
 #### `Options` -> Window Manager
 

@@ -4,12 +4,15 @@
 
 ## Samples
 
-Sample 01: Using massbank.nig.ac.jp server wiki pages.
+**Sample 01**: Using massbank.nig.ac.jp server wiki pages.
 
 ``` html
 <html>
 <head>
-	<meta charset="utf-8"> 
+	<meta charset="utf-8">
+    /**
+     * Dependant Javascripts. jQuery, jQuery UI, Highcharts and MultiView JS files.
+     */
     // jQuery
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     // jQuery UI
@@ -19,6 +22,7 @@ Sample 01: Using massbank.nig.ac.jp server wiki pages.
 	<script type="text/javascript" src="https://code.highcharts.com/modules/exporting.js"></script>
 	// MassBank MultiView
 	<script src="js/msmultiview.js" type="text/javascript"></script>
+    
     <script type="text/javascript">
         $(window).load(function () {
             $("#ms-multiview").msmultiview( "Spectrum:BSU1000004", "Spectrum:CA0a000112" );
@@ -31,7 +35,7 @@ Sample 01: Using massbank.nig.ac.jp server wiki pages.
 </html>
 ```
 
-Sample 02: Using massbank.nig.ac.jp server wiki API full paths.
+**Sample 02**: Using massbank.nig.ac.jp server wiki API full paths.
 
 ``` html
 <html>
@@ -52,7 +56,7 @@ Sample 02: Using massbank.nig.ac.jp server wiki API full paths.
 </html>
 ```
 
-sample 03: Using massbank.nig.ac.jp server search API.
+**sample 03**: Using massbank.nig.ac.jp server search API.
 
 ``` html
 <html>
@@ -98,7 +102,7 @@ sample 03: Using massbank.nig.ac.jp server search API.
 </html>
 ```
 
-sample 04: Using different APIs as Data URLs.
+**sample 04**: Using different response APIs as Data URLs.
 
 ``` html
 <html>

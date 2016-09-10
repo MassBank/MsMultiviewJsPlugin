@@ -2,7 +2,7 @@
 
 ###### *MassBank MultiView JavaScript Plugin*
 
-Msmultiview is a jQuery plugin which supports to manage mass spectral data in many ways. It works whether the browser is in online or offline mode. It was build using [jQuery](https://jquery.com/), [jQuery UI](https://jqueryui.com/) and [Highcharts](http://www.highcharts.com/) libraries.
+Msmultiview is a jQuery plugin which supports to manage mass spectral data in many ways. It works either the browser is in online or offline mode. It is build using [jQuery](https://jquery.com/), [jQuery UI](https://jqueryui.com/) and [Highcharts](http://www.highcharts.com/) libraries.
 
 ### Main features
 
@@ -45,7 +45,7 @@ Make a container `<div>` and give it an identifier like an `ID` or a `Class`.
 
 #### Initialize the plugin
 
-Using a jQuery selector initialize massbank multiview plugin.
+Using a jQuery selector initialize massbank msmultiview plugin.
 
 ``` html
 <script type="text/javascript">
