@@ -1,12 +1,15 @@
 'use strict';
 
 /**
+ * Msmultiview is a jQuery plugin which supports to manage and visualize mass spectral data in graphical ways. 
+ * It works either the browser is in online or offline mode. It builds using jQuery, jQuery UI and Highcharts libraries.
  * 
- * Msmultiview is a jQuery plugin which aims to provide a simple layout for manage mass spectra information in a chart view.
- * It facilitates to visualize, compare and manage mass spectra information in a proper way as researcher needs. 
- * It was build using jQuery, jQuery UI and Highcharts libraries.
+ * Main features:
+ *  - Graphical representation of mass spectral data
+ *  - Manage (sort, delete, export...etc.) active window information with comparing other windows information
+ *  - Zooming graphs areas
  * 
- * @version 3.0.0
+ * @version 3.0.1
  * @license MIT license
  * @author Riken MassBank Project
  * 
@@ -81,9 +84,9 @@
 				
 				function _updateDefaultsParam( param ) {
 					$.fn.msmultiview.defaults.highcharts.yAxis.title.text 					= param.chart.yAxis.title.text;
-					$.fn.msmultiview.defaults.highcharts.series[0].name 						= param.chart.xAxis.title.text;
+					$.fn.msmultiview.defaults.highcharts.series[0].name 					= param.chart.xAxis.title.text;
 					$.fn.msmultiview.defaults.highcharts.series[0].custom.maxmzmarker 		= param.chart.maxmzmarker;
-					$.fn.msmultiview.defaults.highcharts.series[0].custom.intensitythreshold 	= param.chart.intensitythreshold;
+					$.fn.msmultiview.defaults.highcharts.series[0].custom.intensitythreshold= param.chart.intensitythreshold;
 				}
 				
 				_updateDefaultsParam( _param );
@@ -102,7 +105,11 @@
 						} else {
 							console.log( "Invalid argument in initial position." );
 						}
-					} else {
+					}
+				});
+				
+				$.each( args, function( i, arg ) {
+					if ( ! $.isPlainObject( arg ) ) {
 						// generate data URLs
 						var arr =  $.isArray( arg ) ? arg : $.makeArray( arg );
 						
@@ -225,9 +232,9 @@
 				var $wrapper = _mv.popup.getWrapper();
 				$wrapper.empty().show();
 				var sb = [], id_sb = [];
+				sb.push( "<p>The MultiView sample plugin</p>" );
 				if ( window.location.origin.indexOf('https://massbank.nig.ac.jp') != -1 ) {
 					// URL
-					sb.push( "<p>The MultiView sample plugin</p>" );
 					sb.push( "<p>Updated URL:</p>" );
 					sb.push( "<code>" );
 					$( ".current-window ul li" ).each( function() {
@@ -245,8 +252,6 @@
 					sb.push( "</code>" );
 				} else {
 					// FILE
-					var sb = [], id_sb = [];
-					sb.push( "<p>The MultiView sample plugin</p>" );
 					sb.push( "<p>HTML code:</p>" );
 					sb.push( "<code>" );
 					sb.push( "&lt;div id='ms-multiview'&gt;&lt;/div&gt;" );
@@ -835,13 +840,12 @@
 				
 				init: function( $container ) {
 					
-					var defaultWidth = $( ".ms-multiview:first" ).width() - 10;
 					var _zoom = _mv.chartszoomer.param.zoom;
 					
 					$container.find( ".btn-zoom-in" ).click(function() {
 						if ( _zoom.current > 0 ) {
 							_zoom.current = _zoom.current - 1;
-							$( ".mv-chart-container" ).width( ( defaultWidth / _zoom.current ) - 1.5 * _zoom.current );
+							$( ".mv-chart-container" ).css( "width", ( 100 / _zoom.current ) + "%" );
 							_mv.highcharts.event.resize();
 						}
 					});
@@ -849,7 +853,7 @@
 					$container.find( ".btn-zoom-out" ).click(function() {
 						if ( _zoom.current <= 4 ) {
 							_zoom.current = _zoom.current + 1;
-							$( ".mv-chart-container" ).width( ( defaultWidth / _zoom.current ) - 1.5 * _zoom.current );
+							$( ".mv-chart-container" ).css( "width", ( 100 / _zoom.current ) + "%" );
 							_mv.highcharts.event.resize();
 						}
 					});
@@ -857,7 +861,7 @@
 					$container.find( ".btn-zoom-default" ).click(function() {
 						if ( _zoom.current != 1 ) {
 							_zoom.current = 1;
-							$( ".mv-chart-container" ).width( defaultWidth / _zoom.current );
+							$( ".mv-chart-container" ).css( "width", ( 100 / _zoom.current ) + "%" );
 							_mv.highcharts.event.resize();
 						}
 					});
@@ -1195,6 +1199,19 @@
 			_mv.storage.clearWindowData( window[ "name" ] );
 			return;
 		});
+		
+		/* page resize event */
+		$( window ).resize(function() {
+		   setTimeout( _mv.highcharts.event.resize, 100 );
+		   console.log( "window resize..." );
+		});
+		
+		/* page focus event */
+		$( window ).focus(function() {
+			var $root = _mv.plugin.getRoot( window[ "name" ] );
+			_mv.windowsmanager.render( $root );
+			console.log( "window focus..." );
+		});
 	};
 	
 	////////////////////////// PUBLIC INTERFACE - MULTIVIEW OPTIONS /////////////////
@@ -1356,6 +1373,7 @@
 					btnToggleDataLabels : {
 						text : "[toggle data labels]",
 						onclick : function() {
+							_mv.highcharts.event.renderLabel();
 							$( this.container ).closest( ".highcharts-container" ).toggleClass( "show-all-labels" );
 						}
 					}
