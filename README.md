@@ -74,6 +74,10 @@ Using a jQuery selector initialize massbank msmultiview plugin.
 For customization, visit the [Specifications](SPEC.md) page.<br/>
 For code samples, visit [Samples](SAMPLE.md) page.
 
+#### Building optimized sources
+
+Run `npm install && npm run build` to run *webpack* and *uglify-js*. Concatenated and minified output is written to `./target/js`.
+
 Browser Compatibility
 -------
 
