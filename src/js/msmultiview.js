@@ -103,7 +103,7 @@
 							
 							result[ "opts" ] = $.extend( true, {}, $.fn.msmultiview.defaults, arg );
 						} else {
-							console.log( "Invalid argument in initial position." );
+							console.log( "[ERROR] Invalid argument in initial position." );
 						}
 					}
 				});
@@ -720,7 +720,7 @@
 			    		_mv.storage.reset( pluginKey, _objs );
 			    		_mv.windowsmanager.render( $root );
 			    	} else {
-			    		console.log( "No MassBank Id" );
+			    		console.log( "[ERROR] No MassBank Id" );
 			    	}
 			    },
 				toggleEquivalents: function( massbankId ) {
@@ -1154,13 +1154,13 @@
 					}
 				},
 				afterLoad: function( id ) {
-					console.log( "afterLoad... " + Date() + " [" + id + "]" );
+					console.log( "[LOG] afterLoad... " + Date() + " [" + id + "]" );
 				},
 				afterSyncExtremes: function() {
-					console.log( "afterSyncExtremes..." );
+					console.log( "[LOG] afterSyncExtremes..." );
 				},
 				afterZoomOut: function() {
-					console.log( "afterZoomOut..." );
+					console.log( "[LOG] afterZoomOut..." );
 				}
 			}
 		}
@@ -1185,7 +1185,7 @@
 		
 		if ( $root.length > 1 ) {
 			$root = $( $root[0] );
-			console.log( "[warning] There are selectors. multiview plugin initialize only for a one selector." );
+			console.log( "[WARNING] There are selectors. multiview plugin initialize only for a one selector." );
 		}
 		
 		// add multiview plugin identity class
@@ -1203,14 +1203,12 @@
 		/* page resize event */
 		$( window ).resize(function() {
 		   setTimeout( _mv.highcharts.event.resize, 100 );
-		   console.log( "window resize..." );
 		});
 		
 		/* page focus event */
 		$( window ).focus(function() {
 			var $root = _mv.plugin.getRoot( window[ "name" ] );
 			_mv.windowsmanager.render( $root );
-			console.log( "window focus..." );
 		});
 	};
 	
