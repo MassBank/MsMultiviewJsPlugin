@@ -9,7 +9,7 @@
  *  - Manage (sort, delete, export...etc.) active window information with comparing other windows information
  *  - Zooming graphs areas
  * 
- * @version 3.0.1
+ * @version 1.0.0
  * @license MIT license
  * @author Riken MassBank Project
  * 
