@@ -9,7 +9,7 @@
  *  - Manage (sort, delete, export...etc.) active window information with comparing other windows information
  *  - Zooming graphs areas
  * 
- * @version 1.0.0
+ * @version 1.1.0
  * @license MIT license
  * @author Riken MassBank Project
  * 
@@ -166,9 +166,6 @@
 									_arr[0][ "url" ] 	= _url;
 									_arr[0][ "index" ] 	= index;
 									result[ "success" ].push( _arr[0] );
-//									$.each( _arr, function( i, _item ){
-//										result[ "success" ].push( _item );
-//									});
 								} else {
 									result[ "failure" ].push( _url );
 								}
@@ -420,42 +417,84 @@
 				}
 		        return false;
 			},
+			/**
+			 * Retrieves a key from localStorage previously set
+			 * @param {String} key - localStorage key
+			 * @returns {Json} value of localStorage key
+			 * @returns {null} in case of expired key or failure
+			 */
 			get: function( key ) {
-				try {
-					return JSON.parse( localStorage.getItem( key ) );
-				} catch ( e ) {}
-				return;
+				var now = Date.now();  //epoch time, lets deal only with integer
+			    // set expiration for storage
+			    var expiresIn = localStorage.getItem( key + '-expiresin' );
+			    if ( expiresIn === undefined || expiresIn === null ) { expiresIn = 0; }
+			    
+			    if ( expiresIn < now ) {
+			    	_mv.storage.remove( key );
+			    	return null;
+			    } else {
+			    	try {
+			    		return JSON.parse( localStorage.getItem( key ) );
+			    	} catch ( e ) {
+			    		console.log( '[ERROR] Reading key ['+ key + '] from localStorage: ' + JSON.stringify(e) );
+			            return null;
+			    	}
+			    }
 			},
 			getAll: function() {
 				var sb = [];
 				for ( var i = 0; i < localStorage.length; i++ ) {
 					var key = localStorage.key( i );
-		            if ( key.match(/^GUID-/) ) {
-		               sb.push({
-		                  "key"		: key,
-		                  "value"	: JSON.parse( localStorage[ key ] )
-		               });
+		            if ( key.match(/^GUID-/) && ! key.match(/-expiresin$/) ) {
+		            	var _val = _mv.storage.get( key );
+		            	if ( _val ) {
+		            		sb.push({
+		            			"key"	: key,
+		            			"value"	: _val
+		            		});
+		            	}
 		            }
 				}
 				return sb;
 			},
 			getInfoById: function( pluginKey, dataId ) {
 				var _arr = _mv.storage.get( pluginKey );
-				var result;
-				$( _arr ).each(function( i, _item ){
-					if ( _item[ "id" ] == dataId ) {
-						result = _item;
-						return;
-					}
-				});
+				var result = null;
+				if ( _arr ) {
+					$( _arr ).each(function( i, _item ){
+						if ( _item[ "id" ] == dataId ) {
+							result = _item;
+							return;
+						}
+					});
+				}
 				return result;
 			},
-			set: function( key, value ) {
+			/**
+			 * Writes a key into localStorage setting a expire time
+			 * @param {String} key - localStorage key
+			 * @param {String} value - localStorage value
+			 * @param {Number} expires - number of seconds from now to expire the key
+			 * @returns {boolean} telling if operation succeeded
+			 */
+			set: function( key, value, expires ) {
+				if ( expires === undefined || expires === null ) {
+			        expires = ( 5 * 60 );  // default: seconds for 5 minutes
+			    } else {
+			        expires = Math.abs(expires); //make sure it's positive
+			    }
+				var now = Date.now();  //millisecs since epoch time, lets deal only with integer
+			    var schedule = now + expires * 1000; 
 				try {
-					localStorage.setItem( key, JSON.stringify( value ) );
-		            return true;
-				} catch ( e ) {}
-				return false;
+					if ( value ) {
+						localStorage.setItem( key, JSON.stringify( value ) );
+					}
+					localStorage.setItem( key + '-expiresin', schedule );
+				} catch ( e ) {
+					console.log('[ERROR] setting key ['+ key + '] in localStorage: ' + JSON.stringify(e) );
+			        return false;
+				}
+				return true;
 			},
 			merge: function( key, objects ) {
 				var objs = this.get( key );
@@ -483,16 +522,36 @@
 		    	_mv.storage.remove( pluginKey );
 		    	_mv.storage.merge( pluginKey, objs );
 		    },
+		    /**
+		     * Removes a key from localStorage and its sibling expiracy key
+		     * @param {String} key - localStorage key to remove
+		     * @Returns {Boolean} telling if operation succeeded
+		     */
 			remove: function( key ) {
-				localStorage.removeItem( key );
+				try {
+					localStorage.removeItem( key );
+					localStorage.removeItem( key + '-expiresin' );
+				} catch(e) {
+			        console.log( '[ERROR] removing key ['+ key + '] from localStorage: ' + JSON.stringify(e) );
+			        return false;
+			    }
+			    return true;
 			},
 			clearWindowData: function( windowName ) {
 				for ( var i = 0; i < localStorage.length; i++ ) {
 					var key = localStorage.key( i );
 		            if ( key.match(/^GUID-/) && key.startsWith( windowName ) ) {
-		            	localStorage.removeItem( key );
+		            	_mv.storage.remove( key );
 		            }
 				}
+			},
+			/**
+		     * Keeping alive a key from localStorage and its sibling
+		     * @param {String} key - localStorage key to refresh
+		     * @Returns {Boolean} telling if operation succeeded
+		     */
+			refresh: function( key ) {
+				return _mv.storage.set( key );
 			}
 		},
 		
@@ -593,15 +652,15 @@
 				},
 				windows: function( $container, pluginKey ) {
 					var _mvcontainers = _mv.storage.getAll();
+					// get panel
+					var $panel 				= $container.find( ".panel:first" );
+					var $rightWinContainer	= $panel.find( ".right-windows-container:first" ),
+					$leftWinContainer	= $panel.find( ".left-windows-container:first" );
+					
+					$rightWinContainer.empty();
+					$leftWinContainer.empty();
+					
 					if ( _mvcontainers.length > 0 ) {
-						
-						// get panel
-						var $panel 				= $container.find( ".panel:first" );
-						var $rightWinContainer	= $panel.find( ".right-windows-container:first" ),
-							$leftWinContainer	= $panel.find( ".left-windows-container:first" );
-						
-						$rightWinContainer.empty();
-						$leftWinContainer.empty();
 						
 						// append window information
 						$.each( _mvcontainers, function( index, _mvcontainer ) {
@@ -640,6 +699,7 @@
 								$rightWinContainer.append( win_sb.join( "" ) );
 							}
 						});
+						
 					}
 				}
 			},
@@ -907,7 +967,7 @@
 			
 			html: function( $container, pluginKey, options ) {
 				var _pluginCharts = _mv.storage.get( pluginKey );
-				if ( _pluginCharts.length > 0 ) {
+				if ( _pluginCharts && _pluginCharts.length > 0 ) {
 		    		$.each( _pluginCharts, function( index, _pluginChart ) {
 		    			$( "<div class='mv-chart-container frame' alt='" + _pluginChart[ "id" ] + "'></div>" ).appendTo( $container );
 		    			var opts = $.extend( true, {}, $.fn.msmultiview.defaults[ "highcharts" ], options );
@@ -1193,6 +1253,11 @@
 		
 		// initialize multiview plugin
 		_mv.plugin.init( $root, params );
+		
+		/* set local storage in every 5 minutes */
+		window.setInterval(function(){
+			_mv.storage.refresh( window[ "name" ] );
+		}, 5*1000); // call every 5 mins
 		
 		/* page close event */
 		$( window ).unload(function() {
