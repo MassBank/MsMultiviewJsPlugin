@@ -2,20 +2,19 @@
 
 ###### *MassBank MultiView JavaScript Plugin*
 
-Msmultiview is a jQuery plugin which supports to manage mass spectral data in many ways. It works either the browser is in online or offline mode. It is build using [jQuery](https://jquery.com/), [jQuery UI](https://jqueryui.com/) and [Highcharts](http://www.highcharts.com/) libraries.
+Msmultiview is a jQuery plugin for managing mass spectra in many ways. It works either online / offline in a browser. It is build on [jQuery](https://jquery.com/), [jQuery UI](https://jqueryui.com/) and [Highcharts](http://www.highcharts.com/) libraries.
 
 ### Main features
 
 * Graphical representation of mass spectral data
-* Manage (sort, delete, export...etc) chart list with comparing own window and other windows information
-* Zoom in and out of charts areas
+* Manage (sort, delete, export...etc) chart list within multiple browser windows
+* Zoom in and out of chart areas
 
 ## Installation
 
 #### Set Page encoding to UTF-8
 
-The source code contains non-ASCII characters and must be served with UTF-8 encoding, 
-either via the `charset="utf-8"` attribute on the `script` tag or by adding `<meta charset="utf-8">` to the top of the page.
+The source code contains non-ASCII characters and must be served with UTF-8 encoding, either via the `charset="utf-8"` attribute on the `script` tag or by adding `<meta charset="utf-8">` to the page top.
 
 #### Add CSS and Javascript
 
@@ -86,9 +85,9 @@ This plugin supports so-called “modern” browsers, which added support of the
 License
 -------
 
-MassBank MultiView is free plugin, licensed under the creative commons by, Version 3.0.
+MassBank MultiView is free plugin, licensed under the creative commons CC-BY, Version 3.0.
 
 Copyright
 -------
 
-MassBank MultiView plugin is copyright © 2016-present Massbank Riken.
+MassBank MultiView plugin is copyrighted © 2016-present Massbank Developing Team at RIKEN CSRS.
